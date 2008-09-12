@@ -3,6 +3,12 @@
 // Richard Crowley <r@rcrowley.org>
 //
 
+// Monkeypatch the Dopploadr string bundle
+var strings = document.createElement('stringbundle');
+strings.id = 'strings';
+strings.setAttribute('src', 'chrome://dopploadr/locale/overlay.properties');
+document.getElementById('locale').parentNode.appendChild(strings);
+
 // Ask them to auth with Dopplr after login
 extension.after_login.add(function(user) {
 	Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
