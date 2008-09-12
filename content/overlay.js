@@ -14,6 +14,13 @@ extension.after_login.add(function(user) {
 	Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
 		.logStringMessage('after_login! user: ' + user.toSource());
 
+	// Maybe we're already auth'ed with Dopplr?
+	if (userinfo.get('dopplr_token')) {
+		Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
+			.logStringMessage('dopplr_token: ' + userinfo.get('dopplr_token'));
+		return;
+	}
+
 	// See if we should auth with Dopplr
 	if (!confirm(strings.getString('dopploadr.login.alert.text'),
 		strings.getString('dopploadr.login.alert.title'))) {
@@ -26,7 +33,11 @@ extension.after_login.add(function(user) {
 	// Be prepared to take the dopplr callback string when they paste it in
 	var token = prompt(strings.getString('dopploadr.login.prompt.text'),
 		strings.getString('dopploadr.login.prompt.title'));
-	if (token) { userinfo.set('dopplr_token', token);
+	if (token) {
+		Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
+			.logStringMessage('dopplr_token: ' + token);
+		userinfo.set('dopplr_token', token);
+	}
 
 });
 
