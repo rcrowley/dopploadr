@@ -15,6 +15,7 @@ extension.after_login.add(function(user) {
 		.logStringMessage('after_login! user: ' + user.toSource());
 
 	// Maybe we're already auth'ed with Dopplr?
+userinfo.unset('dopplr_token');
 	if (userinfo.get('dopplr_token')) {
 		Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
 			.logStringMessage('dopplr_token: ' + userinfo.get('dopplr_token'));
@@ -28,16 +29,23 @@ extension.after_login.add(function(user) {
 	}
 
 	// Auth with Dopplr
-	launch_browser('http://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com&next=http://dopploadr.rcrowley.org/token/&session=1');
+	launch_browser('https://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com&next=http://dopploadr.rcrowley.org/token/&session=1');
 
 	// Be prepared to take the dopplr callback string when they paste it in
 	var token = prompt(strings.getString('dopploadr.login.prompt.text'),
 		strings.getString('dopploadr.login.prompt.title'));
-	if (token) {
+	http.get('https://www.dopplr.com/api/AuthSubSessionToken', {
+		'token': token
+	}, function(xhr) {
 		Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
-			.logStringMessage('dopplr_token: ' + token);
-		userinfo.set('dopplr_token', token);
-	}
+			.logStringMessage(xhr.responseText);
+		var parse = xhr.responseText.match(/^Token=(.*)\nExpiration=(.*)$/);
+		if (parse) {
+			Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
+				.logStringMessage('dopplr_token: ' + parse[1]);
+			userinfo.set('dopplr_token', parse[1]);
+		}
+	});
 
 });
 

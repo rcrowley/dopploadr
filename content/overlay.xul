@@ -17,6 +17,7 @@ Richard Crowley <r@rcrowley.org>
 
 	<script src="chrome://dopploadr/content/userinfo.js" />
 	<script src="chrome://dopploadr/content/events.js" />
+	<script src="chrome://dopploadr/content/http.js" />
 	<script src="chrome://dopploadr/content/overlay.js" />
 
 	<!-- Painful memories prevent me from touching the right panel at all -->
