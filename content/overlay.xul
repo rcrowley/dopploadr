@@ -10,6 +10,11 @@ Richard Crowley <r@rcrowley.org>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	id="dopploadr-overlay">
 
+	<stringbundleset>
+		<stringbundle id="strings"
+			src="chrome://dopploadr/locale/overlay.properties" />
+	</stringbundleset>
+
 	<script src="chrome://dopploadr/content/userinfo.js" />
 	<script src="chrome://dopploadr/content/events.js" />
 	<script src="chrome://dopploadr/content/overlay.js" />

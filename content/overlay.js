@@ -14,14 +14,12 @@ extension.after_login.add(function(user) {
 	Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
 		.logStringMessage('after_login! user: ' + user.toSource());
 
-	// Testing userinfo
-	var a = userinfo.get('dopploadr');
-	var b = userinfo.set('dopploadr', true);
-	var c = userinfo.get('dopploadr');
-	var d = userinfo.unset('dopploadr');
-	var e = userinfo.get('dopploadr');
-
-	// TODO
+	// Warn them and then take them to Dopplr for auth
+	if (confirm(strings.getString('dopploadr.login.alert.text'),
+		strings.getString('dopploadr.login.alert.title'))) {
+		launch_browser('http://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com&next=http://dopploadr.rcrowley.org/auth/&session=1');
+		asdf();
+	}
 
 });
 
