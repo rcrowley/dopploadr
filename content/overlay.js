@@ -14,12 +14,19 @@ extension.after_login.add(function(user) {
 	Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
 		.logStringMessage('after_login! user: ' + user.toSource());
 
-	// Warn them and then take them to Dopplr for auth
-	if (confirm(strings.getString('dopploadr.login.alert.text'),
+	// See if we should auth with Dopplr
+	if (!confirm(strings.getString('dopploadr.login.alert.text'),
 		strings.getString('dopploadr.login.alert.title'))) {
-		launch_browser('http://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com&next=http://dopploadr.rcrowley.org/auth/&session=1');
-		asdf();
+		return;
 	}
+
+	// Auth with Dopplr
+	launch_browser('http://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com&next=http://dopploadr.rcrowley.org/token/&session=1');
+
+	// Be prepared to take the dopplr callback string when they paste it in
+	var token = prompt(strings.getString('dopploadr.login.prompt.text'),
+		strings.getString('dopploadr.login.prompt.title'));
+	if (token) { userinfo.set('dopplr_token', token);
 
 });
 
