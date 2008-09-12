@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/Applications/Flickr\ Uploadr.app/Contents/MacOS/xulrunner -jsconsole
