@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+
+Dopploadr
+Richard Crowley <r@rcrowley.org>
+
+-->
+<?xml-stylesheet href="chrome://dopploadr/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://dopploadr/locale/overlay.dtd">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	id="dopploadr-overlay">
+
+	<script src="chrome://dopploadr/content/userinfo.js" />
+	<script src="chrome://dopploadr/content/events.js" />
+	<script src="chrome://dopploadr/content/overlay.js" />
+
+	<!-- Painful memories prevent me from touching the right panel at all -->
+	<statusbar id="status-bar">
+		<statusbarpanel id="dopploadr-location" align="right"
+			label="&dopploadr.location;" />
+	</statusbar>
+
+</overlay>

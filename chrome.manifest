@@ -1,0 +1,9 @@
+#
+# Dopploadr
+# Richard Crowley <r@rcrowley.org>
+#
+
+content dopploadr content/
+overlay chrome://uploadr/content/main.xul chrome://dopploadr/content/overlay.xul
+locale dopploadr en-US locale/en-US/
+skin dopploadr default skin/
