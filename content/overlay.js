@@ -3,6 +3,9 @@
 // Richard Crowley <r@rcrowley.org>
 //
 
+// Enable/disable the Upload button monkeypatch
+const monkeypatch_upload = false;
+
 // Monkeypatch the Dopploadr string bundle
 var strings = document.createElement('stringbundle');
 strings.id = 'strings';
@@ -10,11 +13,13 @@ strings.setAttribute('src', 'chrome://dopploadr/locale/overlay.properties');
 document.getElementById('locale').parentNode.appendChild(strings);
 
 // Monkeypatch the big Upload button to pay attention to the API queue
-buttons.upload._enable = buttons.upload.enable;
-buttons.upload.enable = function() {
-	if (dopploadr._queue) { return; }
-	buttons.upload._enable();
-};
+if (monkeypatch_upload) {
+	buttons.upload._enable = buttons.upload.enable;
+	buttons.upload.enable = function() {
+		if (dopploadr._queue) { return; }
+		buttons.upload._enable();
+	};
+}
 
 // Ask them to auth with Dopplr after login
 extension.after_login.add(function(user) {
@@ -69,7 +74,7 @@ extension.after_thumb.add(function(id) {
 			'tags': tags
 		};
 		dopploadr.dequeue();
-		buttons.upload.enable();
+		if (monkeypatch_upload) { buttons.upload.enable(); }
 	});
 });
 
