@@ -46,11 +46,8 @@ extension.after_add.add(function(list) { dopploadr.queue(list.length); });
 // After a photo is added, save the geo data for later
 //   TODO: Cache date -> geo data
 extension.after_thumb.add(function(id) {
-Components.utils.reportError('after_thumb! id: ' + id);
 	var d = photos.list[id].date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
 	dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3], function(l) {
-Components.utils.reportError('location_on_date! id: ' + id);
-		Components.utils.reportError(l.toSource());
 		var c = l.location.trip ? l.location.trip.city : l.location.home;
 		var tags = [
 			c.name.toLowerCase().replace(/\s/g, ''),
@@ -71,7 +68,6 @@ Components.utils.reportError('location_on_date! id: ' + id);
 			'lon': c.longitude,
 			'tags': tags
 		};
-Components.utils.reportError(photos.list.toSource());
 		dopploadr.dequeue();
 		buttons.upload.enable();
 	});
@@ -79,19 +75,14 @@ Components.utils.reportError(photos.list.toSource());
 
 // Just before uploading a photo, add in the geo-related tags saved earlier
 extension.before_one_upload.add(function(photo) {
-Components.utils.reportError('before_one_upload! photo.id: ' + photo.id);
 	if (!photo.geo) { return; }
-Components.utils.reportError('before_one_upload! really');
 	photo.tags = meta.tags(photo.tags, photo.geo.tags.join(' '));
 });
 
 // Geotag photos as they successfully upload
 //   11 is the accuracy level for a city
 extension.after_one_upload.add(function(photo, success) {
-Components.utils.reportError('after_one_upload! photo.id: ' + photo.id +
-', success: ' + success);
 	if (!success || !photo.geo) { return; }
-Components.utils.reportError('after_one_upload! really');
 	flickr.photos.geo.setLocation(null, users.token, photo.photo_id,
 		photo.geo.lat, photo.geo.lon, 11);
 });
