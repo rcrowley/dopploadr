@@ -19,6 +19,7 @@ Richard Crowley <r@rcrowley.org>
 	<script src="chrome://dopploadr/content/events.js" />
 	<script src="chrome://dopploadr/content/http.js" />
 	<script src="chrome://dopploadr/content/json.js" />
+	<script src="chrome://dopploadr/content/flickr.js" />
 	<script src="chrome://dopploadr/content/dopplr.js" />
 	<script src="chrome://dopploadr/content/dopploadr.js" />
 	<script src="chrome://dopploadr/content/overlay.js" />

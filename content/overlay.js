@@ -46,7 +46,7 @@ extension.after_thumb.add(function(id) {
 			lon: c.longitude,
 			tags: [
 				c.name.toLowerCase().replace(/\s/, ''),
-				'geonames:locality=' + c.geoname_id,
+				'geonames:locality=' + c.geoname_id
 			]
 		};
 		if (loc.location.trip) {
@@ -55,5 +55,17 @@ extension.after_thumb.add(function(id) {
 		}
 		Components.utils.reportError(photos.list[id].geo.toSource());
 	});
-	//Components.utils.reportError(photos.list[id].toSource());
+});
+
+// Just before uploading a photo, add in the geo-related tags saved earlier
+extension.before_one_upload.add(function(photo) {
+	if (!photo.geo) { return; }
+	photo.tags = meta.tags(photo.tags, photo.geo.tags.join(' '));
+});
+
+// Geotag photos as they successfully upload
+//   11 is the accuracy level for a city
+extension.after_one_upload.add(function(photo, success) {
+	if (!success || !photo.geo) { return; }
+	flickr.photos.geo.setLocation(null, users.token, photo.photo_id, photo.geo.lat, photo.geo.lon, 11);
 });
