@@ -4,7 +4,7 @@
 //
 
 // Enable/disable the Upload button monkeypatch
-const monkeypatch_upload = false;
+const monkeypatch_upload = true;
 
 // Monkeypatch the Dopploadr string bundle
 var strings = document.createElement('stringbundle');
@@ -49,10 +49,13 @@ extension.after_logout.add(function() {
 extension.after_add.add(function(list) { dopploadr.queue(list.length); });
 
 // After a photo is added, save the geo data for later
+//   The extension API should really be passing the photo object - my bad
 //   TODO: Cache date -> geo data
 extension.after_thumb.add(function(id) {
-	var d = photos.list[id].date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
+	var photo = photos.list[id];
+	var d = photo.date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
 	dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3], function(l) {
+Components.utils.reportError(l.toSource());
 		var c = l.location.trip ? l.location.trip.city : l.location.home;
 		var tags = [
 			c.name.toLowerCase().replace(/\s/g, ''),
@@ -68,7 +71,7 @@ extension.after_thumb.add(function(id) {
 		if (l.location.trip) {
 			tags.push('dopplr:trip=' + l.location.trip.id);
 		}
-		photos.list[id].geo = {
+		photo.geo = {
 			'lat': c.latitude,
 			'lon': c.longitude,
 			'tags': tags
@@ -88,6 +91,7 @@ extension.before_one_upload.add(function(photo) {
 //   11 is the accuracy level for a city
 extension.after_one_upload.add(function(photo, success) {
 	if (!success || !photo.geo) { return; }
+Components.utils.reportError('photo_id: ' + photo.photo_id + ' => ' + photo.geo.toSource());
 	flickr.photos.geo.setLocation(null, users.token, photo.photo_id,
 		photo.geo.lat, photo.geo.lon, 11);
 });
