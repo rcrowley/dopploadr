@@ -53,7 +53,6 @@ const dopploadr = {
 	_auth: function(authed) {
 		if (authed) {
 			dopplr.traveller_info(null, function(t) {
-Components.utils.reportError(t.traveller.nick);
 				dopploadr.status(strings.getFormattedString(
 					'dopploadr.status.authed', [t.traveller.nick]));
 			});
