@@ -55,7 +55,6 @@ extension.after_thumb.add(function(id) {
 	var photo = photos.list[id];
 	var d = photo.date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
 	dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3], function(l) {
-Components.utils.reportError(l.toSource());
 		var c = l.location.trip ? l.location.trip.city : l.location.home;
 		var tags = [
 			c.name.toLowerCase().replace(/\s/g, ''),
@@ -91,7 +90,6 @@ extension.before_one_upload.add(function(photo) {
 //   11 is the accuracy level for a city
 extension.after_one_upload.add(function(photo, success) {
 	if (!success || !photo.geo) { return; }
-Components.utils.reportError('photo_id: ' + photo.photo_id + ' => ' + photo.geo.toSource());
 	flickr.photos.geo.setLocation(null, users.token, photo.photo_id,
 		photo.geo.lat, photo.geo.lon, 11);
 });
