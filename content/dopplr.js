@@ -14,6 +14,10 @@ const dopplr = {
 		);
 	},
 
+	location_on_date: function(d, callback) {
+		this._api('location_on_date', {'date': d}, callback);
+	},
+
 	// The real meat of the API call
 	_api: function(method, params, callback) {
 		params['format'] = 'js';
