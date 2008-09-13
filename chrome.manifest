@@ -2,6 +2,8 @@
 # Dopploadr
 # Richard Crowley <r@rcrowley.org>
 #
+# Remember to change the production version if you change this
+#
 
 content dopploadr content/
 overlay chrome://uploadr/content/main.xul chrome://dopploadr/content/overlay.xul

@@ -1,0 +1,9 @@
+#
+# Dopploadr
+# Richard Crowley <r@rcrowley.org>
+#
+
+content dopploadr jar:dopploadr.jar!/content/
+overlay chrome://uploadr/content/main.xul chrome://dopploadr/content/overlay.xul
+locale dopploadr en-US jar:dopploadr.jar!/locale/en-US/
+skin dopploadr default jar:dopploadr.jar!/skin/
