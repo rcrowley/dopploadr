@@ -27,7 +27,7 @@ const dopploadr = {
 		// Auth with Dopplr
 		launch_browser('https://www.dopplr.com/api/AuthSubRequest?' +
 			'scope=http://www.dopplr.com&' +
-			'next=http://dopploadr.rcrowley.org/token/&' +
+			'next=http://dopploadr.rcrowley.org/token&' +
 			'session=1');
 
 		// Be prepared to take the dopplr callback string when they paste it in
