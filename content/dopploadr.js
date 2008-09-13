@@ -68,8 +68,9 @@ const dopploadr = {
 	// Keep track of outstanding API calls to prevent premature uploads
 	_queue: 0,
 	queue: function(i) {
-		if (i) { this._queue = i; }
+		if ('number' == typeof i) { this._queue = i; }
 		else { ++this._queue; }
+		if (!this._queue) { return; }
 		this.status(strings.getFormattedString('dopploadr.status.api',
 			[userinfo.get('dopplr_nick'), this._queue]));
 	},
