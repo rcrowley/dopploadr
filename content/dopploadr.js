@@ -49,7 +49,7 @@ const dopploadr = {
 
 	},
 
-	// Update the UI and maybe 
+	// Update the UI and grab their username
 	_auth: function(authed) {
 		if (authed) {
 			dopplr.traveller_info(null, function(t) {
