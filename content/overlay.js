@@ -32,3 +32,22 @@ extension.after_logout.add(function() {
 	// TODO
 
 });
+
+// After a batch of photos is added, save the geo data for later
+//   TODO: Cache date -> geo data
+extension.after_thumb.add(function(id) {
+	var d = photos.list[id].date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
+	dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3], function(loc) {
+		//photos.list[id].tags = meta.tags(photos.list[id].tags, tags);
+		photos.list[id].geo = {
+			lat: loc.location.trip.city.latitude,
+			lon: loc.location.trip.city.longitude,
+			tags: [
+				loc.location.trip.city.name.toLowerCase().replace(/\s/, ''),
+				'geonames:locality=' + loc.location.trip.city.geoname_id,
+				'dopplr:trip=' + loc.location.trip.id
+			]
+		};
+	});
+	Components.utils.reportError(photos.list[id].toSource());
+});
