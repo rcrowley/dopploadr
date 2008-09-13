@@ -53,15 +53,38 @@ const dopploadr = {
 	_auth: function(authed) {
 		if (authed) {
 			dopplr.traveller_info(null, function(t) {
+				userinfo.set('dopplr_nick', t.traveller.nick);
 				dopploadr.status(strings.getFormattedString(
 					'dopploadr.status.authed', [t.traveller.nick]));
 			});
 		} else {
 			this.status(strings.getString('dopploadr.status'));
+			userinfo.unset('dopplr_token');
+			userinfo.unset('dopplr_nick');
 			// TODO: Click-to-auth
 		}
 	},
 
+	// Keep track of outstanding API calls to prevent premature uploads
+	_queue: 0,
+	queue: function(i) {
+		if (i) { this._queue = i; }
+		else { ++this._queue; }
+		this.status(strings.getFormattedString('dopploadr.status.api',
+			[userinfo.get('dopplr_nick'), this._queue]));
+	},
+	dequeue: function() {
+		--this._queue;
+		if (this._queue) {
+			this.status(strings.getFormattedString('dopploadr.status.api',
+				[userinfo.get('dopplr_nick'), this._queue]));
+		} else {
+			this.status(strings.getFormattedString('dopploadr.status.authed',
+				[userinfo.get('dopplr_nick')]));
+		}
+	},
+
+	// Update the status bar message
 	status: function(s) {
 		document.getElementById('dopploadr-status').label = s;
 	}

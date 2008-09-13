@@ -9,6 +9,13 @@ strings.id = 'strings';
 strings.setAttribute('src', 'chrome://dopploadr/locale/overlay.properties');
 document.getElementById('locale').parentNode.appendChild(strings);
 
+// Monkeypatch the big Upload button to pay attention to the API queue
+buttons.upload._enable = buttons.upload.enable;
+buttons.upload.enable = function() {
+	if (dopploadr._queue) { return; }
+	buttons.upload._enable();
+};
+
 // Ask them to auth with Dopplr after login
 extension.after_login.add(function(user) {
 	Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
@@ -33,7 +40,10 @@ extension.after_logout.add(function() {
 
 });
 
-// After a batch of photos is added, save the geo data for later
+// Block uploads until the Dopplr calls have all returned
+extension.after_add.add(function(list) { dopploadr.queue(list.length); });
+
+// After a photo is added, save the geo data for later
 //   TODO: Cache date -> geo data
 extension.after_thumb.add(function(id) {
 Components.utils.reportError('after_thumb! id: ' + id);
@@ -61,7 +71,9 @@ Components.utils.reportError('location_on_date! id: ' + id);
 			'lon': c.longitude,
 			'tags': tags
 		};
-		Components.utils.reportError(photos.list.toSource());
+Components.utils.reportError(photos.list.toSource());
+		dopploadr.dequeue();
+		buttons.upload.enable();
 	});
 });
 
