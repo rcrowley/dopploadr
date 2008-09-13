@@ -38,16 +38,22 @@ extension.after_logout.add(function() {
 extension.after_thumb.add(function(id) {
 	var d = photos.list[id].date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
 	dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3], function(loc) {
+		Components.utils.reportError(loc.toSource());
 		//photos.list[id].tags = meta.tags(photos.list[id].tags, tags);
+		var c = loc.location.trip ? loc.location.trip.city : loc.location.home;
 		photos.list[id].geo = {
-			lat: loc.location.trip.city.latitude,
-			lon: loc.location.trip.city.longitude,
+			lat: c.latitude,
+			lon: c.longitude,
 			tags: [
-				loc.location.trip.city.name.toLowerCase().replace(/\s/, ''),
-				'geonames:locality=' + loc.location.trip.city.geoname_id,
-				'dopplr:trip=' + loc.location.trip.id
+				c.name.toLowerCase().replace(/\s/, ''),
+				'geonames:locality=' + c.geoname_id,
 			]
 		};
+		if (loc.location.trip) {
+			photos.list[id].geo.tags.push(
+				'dopplr:trip=' + loc.location.trip_id);
+		}
+		Components.utils.reportError(photos.list[id].geo.toSource());
 	});
-	Components.utils.reportError(photos.list[id].toSource());
+	//Components.utils.reportError(photos.list[id].toSource());
 });
