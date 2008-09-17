@@ -3,7 +3,7 @@
 # Richard Crowley <r@rcrowley.org>
 #
 
-VERSION=0.1
+VERSION=0.1.1
 
 all:
 	zip -r dopploadr.jar content locale skin
