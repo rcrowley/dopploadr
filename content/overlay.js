@@ -23,8 +23,6 @@ if (monkeypatch_upload) {
 
 // Ask them to auth with Dopplr after login
 extension.after_login.add(function(user) {
-	Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
-		.logStringMessage('after_login! user: ' + user.toSource());
 
 	// Maybe we're already auth'ed with Dopplr?
 	if (userinfo.get('dopplr_token')) {
