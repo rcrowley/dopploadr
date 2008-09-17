@@ -10,11 +10,11 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>dopploadr@rcrowley.org</em:id>
 		<em:name>Dopploadr</em:name>
-		<em:version>0.1</em:version>
+		<em:version>0.1.1</em:version>
 		<em:description>Use Dopplr trips to automatically geotag photos
 		uploaded with Flickr Uploadr</em:description>
 		<em:creator>Richard Crowley</em:creator>
-		<em:homepageURL>http://rcrowley.org/dopploadr</em:homepageURL>
+		<em:homepageURL>http://dopploadr.rcrowley.org/</em:homepageURL>
 		<em:targetApplication>
 			<Description>
 				<em:id>uploadr@flickr.com</em:id>
