@@ -20,11 +20,16 @@ const dopplr = {
 
 	// The real meat of the API call
 	_api: function(method, params, callback) {
+		var url = this.endpoint + method;
 		params['format'] = 'js';
 		params['token']  = userinfo.get('dopplr_token');
-		http.get(this.endpoint + method, params, function(xhr) {
+		http.get(url, params, function(xhr) {
 			if ('function' == typeof callback) {
-				callback(json.decode(xhr.responseText));
+				var obj = json.decode(xhr.responseText);
+				if (null === obj) {
+					Components.utils.reportError('dopplr._api received null');
+					http.get(url, params, arguments.callee);
+				} else { callback(obj); }
 			}
 		});
 	}

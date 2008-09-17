@@ -53,12 +53,6 @@ extension.after_thumb.add(function(id) {
 	var photo = photos.list[id];
 	var d = photo.date_taken.match(/^(\d{4})[-:](\d{2})[-:](\d{2})/);
 	dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3], function(l) {
-		if (null === l) {
-			Cc['@mozilla.org/consoleservice;1'].getService(Ci.nsIConsoleService)
-				.logStringMessage('dopplr.location_on_date callback got null');
-			dopplr.location_on_date(d[1] + '-' + d[2] + '-' + d[3],
-				arguments.callee);
-		}
 		var c = l.location.trip ? l.location.trip.city : l.location.home;
 		var tags = [
 			c.name.toLowerCase().replace(/\s/g, ''),

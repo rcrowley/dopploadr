@@ -8,8 +8,8 @@ const dopploadr = {
 	// Call the callback with true if the current Flickr user has a
 	// valid Dopplr token and false otherwise
 	check_token: function(callback) {
-		dopplr.traveller_info(null, function(xhr) {
-			callback('AuthSub required.' != xhr.responseText);
+		dopplr.traveller_info(null, function(obj) {
+			callback(null !== obj);
 		});
 	},
 
