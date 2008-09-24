@@ -57,6 +57,7 @@ extension.after_thumb.add(function(id) {
 		var tags = [
 			c.name.toLowerCase().replace(/\s/g, ''),
 			'woe:id=' + c.woeid,
+			'dopplr:woeid=' + c.woeid,
 			'geonames:locality=' + c.geoname_id
 		];
 		if (c.region) {
